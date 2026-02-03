@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CPU Scheduling Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family:
+          Segoe UI,
+          sans-serif;
+        background: linear-gradient(135deg, #020617, #1e293b);
+        color: #f8fafc;
+      }
+      .slide {
+        min-height: 100vh;
+        padding: 60px 30px;
+        display: none;
+      }
+      .slide.active {
+        display: block;
+        animation: fade 1s;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1,
+      h2 {
+        color: #38bdf8;
+      }
+      p {
+        max-width: 900px;
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      /* Diagrams */
+      .queue {
+        display: flex;
+        gap: 15px;
+        margin: 30px 0;
+      }
+      .process {
+        padding: 15px 22px;
+        background: linear-gradient(135deg, #22c55e, #4ade80);
+        color: #020617;
+        border-radius: 14px;
+        font-weight: bold;
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+
+      .cpu {
+        padding: 20px 35px;
+        background: linear-gradient(135deg, #2563eb, #60a5fa);
+        border-radius: 16px;
+        display: inline-block;
+        font-weight: bold;
+      }
+
+      .box {
+        background: #020617;
+        border-left: 5px solid #38bdf8;
+        padding: 18px;
+        border-radius: 12px;
+        margin-top: 20px;
+      }
+
+      .controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+      }
+      button {
+        padding: 14px 22px;
+        border: none;
+        border-radius: 12px;
+        background: #facc15;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SLIDE 1 -->
+    <div
+      class="slide active"
+      data-voice="
+CPU scheduling decides which process gets the CPU.
+CPU is like a teacher in a class.
+Many students want attention, but teacher can listen to only one at a time.
+Scheduling helps manage this properly.
+"
+    >
+      <h1>CPU Scheduling Algorithms</h1>
+      <p>
+        CPU Scheduling decides <b>which process runs</b> and <b>when</b>. CPU is
+        the most important part of a computer.
+      </p>
+      <div class="box">
+        <b>Diagram Parts:</b><br />
+        Process → Program waiting for CPU<br />
+        Queue → Line of waiting processes<br />
+        CPU → Executes instructions
+      </div>
+    </div>
+
+    <!-- FCFS -->
+    <div
+      class="slide"
+      data-voice="
+First Come First Serve works like a queue.
+The first process that arrives gets the CPU first.
+Even if it is very long, CPU will not stop it.
+This causes waiting for others.
+"
+    >
+      <h2>FCFS – First Come First Serve</h2>
+      <p>Processes execute in the order they arrive.</p>
+
+      <div class="queue">
+        <div class="process">P1 (5s)</div>
+        <div class="process">P2 (3s)</div>
+        <div class="process">P3 (2s)</div>
+      </div>
+
+      <div class="cpu">CPU</div>
+
+      <div class="box">
+        <b>Real Life Example:</b><br />
+        ATM queue – one person takes long time, others must wait.
+      </div>
+
+      <div class="box">
+        <b>Difficult Word:</b><br />
+        <b>Convoy Effect</b> → One long process delays all others.
+      </div>
+
+      <div class="box">
+        <b>Theory:</b>
+        <ul>
+          <li>Non-preemptive</li>
+          <li>Simple</li>
+          <li>High waiting time</li>
+          <li>Used in batch systems</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SJF -->
+    <div
+      class="slide"
+      data-voice="
+Shortest Job First selects the process with least execution time.
+Small tasks finish first.
+This reduces average waiting time.
+But long tasks may starve.
+"
+    >
+      <h2>SJF – Shortest Job First</h2>
+      <p>CPU selects process with smallest burst time.</p>
+
+      <div class="queue">
+        <div class="process">P1 (6)</div>
+        <div class="process">P2 (2)</div>
+        <div class="process">P3 (1)</div>
+      </div>
+
+      <div class="box">
+        <b>Real Example:</b><br />
+        Teacher checks small homework first to finish quickly.
+      </div>
+
+      <div class="box">
+        <b>Difficult Word:</b><br />
+        <b>Starvation</b> → A process waits very long and may never run.
+      </div>
+
+      <div class="box">
+        <b>Theory:</b>
+        <ul>
+          <li>Minimum average waiting time</li>
+          <li>Needs burst time prediction</li>
+          <li>Risk of starvation</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RR -->
+    <div
+      class="slide"
+      data-voice="
+Round Robin gives equal time to all processes.
+Each process gets fixed time called time quantum.
+CPU rotates between processes.
+This is fair and used in modern systems.
+"
+    >
+      <h2>Round Robin Scheduling</h2>
+      <p>Each process gets CPU for fixed time.</p>
+
+      <div class="queue">
+        <div class="process">P1</div>
+        <div class="process">P2</div>
+        <div class="process">P3</div>
+      </div>
+
+      <div class="box">
+        <b>Real Example:</b><br />
+        Class discussion – everyone speaks for two minutes.
+      </div>
+
+      <div class="box">
+        <b>Difficult Word:</b><br />
+        <b>Time Quantum</b> → Fixed CPU time slice.
+      </div>
+
+      <div class="box">
+        <b>Theory:</b>
+        <ul>
+          <li>Preemptive</li>
+          <li>Fair scheduling</li>
+          <li>Used in time-sharing OS</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PRIORITY -->
+    <div
+      class="slide"
+      data-voice="
+Priority scheduling selects important processes first.
+Higher priority means earlier execution.
+Low priority tasks may wait.
+Aging is used to solve this problem.
+"
+    >
+      <h2>Priority Scheduling</h2>
+      <p>CPU executes higher priority processes first.</p>
+
+      <div class="queue">
+        <div class="process">Low</div>
+        <div class="process">High</div>
+        <div class="process">Medium</div>
+      </div>
+
+      <div class="box">
+        <b>Real Example:</b><br />
+        Hospital emergency cases treated first.
+      </div>
+
+      <div class="box">
+        <b>Difficult Word:</b><br />
+        <b>Aging</b> → Increasing priority of waiting processes.
+      </div>
+
+      <div class="box">
+        <b>Theory:</b>
+        <ul>
+          <li>Preemptive or non-preemptive</li>
+          <li>Starvation possible</li>
+          <li>Aging prevents starvation</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- END -->
+    <div
+      class="slide"
+      data-voice="
+CPU scheduling balances fairness and performance.
+Different algorithms suit different systems.
+Understanding this helps build efficient operating systems.
+"
+    >
+      <h1>Conclusion</h1>
+      <p>
+        Different scheduling algorithms solve different problems. Choosing the
+        right one improves system performance.
+      </p>
+    </div>
+
+    <div class="controls">
+      <button onclick="next()">Next ▶</button>
+    </div>
+
+    <script>
+      let slides = document.querySelectorAll(".slide");
+      let i = 0;
+
+      function speak(text) {
+        speechSynthesis.cancel();
+        let msg = new SpeechSynthesisUtterance(text);
+        msg.rate = 0.9;
+        speechSynthesis.speak(msg);
+      }
+
+      function next() {
+        slides[i].classList.remove("active");
+        i = (i + 1) % slides.length;
+        slides[i].classList.add("active");
+        speak(slides[i].dataset.voice);
+      }
+
+      // auto speak first slide
+      speak(slides[0].dataset.voice);
+    </script>
+  </body>
+</html>
